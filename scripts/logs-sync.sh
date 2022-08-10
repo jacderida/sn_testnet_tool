@@ -18,9 +18,10 @@ cat ${testnet_channel}-ip-list | while read line; do
   name=$(echo $line | awk '{print $1}')
   ip=$(echo $line | awk '{print $2}')
   echo "Getting $name logs from $ip"
-  rsync \
-    --rsh="ssh -o StrictHostKeyChecking=no" \
-    --verbose \
-    --recursive \
-    root@${ip}:~/logs logs/${testnet_channel}/${name}___${ip}
+  # For the reason this is used, see the comment in the wrapper script.
+  source rsync-wrapper.sh \
+    "--rsh='ssh -o StrictHostKeyChecking=no'" \
+    "--verbose" \
+    "--recursive" \
+    "root@${ip}:~/logs logs/${testnet_channel}/${name}___${ip}"
 done
